@@ -4,6 +4,11 @@
     height: 100vh;
 }
 
+html {
+	width:121%;
+	height:122%
+}
+
 body {
     margin: 0;
     font-family: sans-serif;
