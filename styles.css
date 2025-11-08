@@ -1,0 +1,80 @@
+#flexy {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #E7F2EF;
+    background: linear-gradient(95deg, #A1C2BD, #A1C2BD 15%, #E7F2EF);
+    color: #19183B;
+}
+
+#text > h1 {
+    margin: 0;
+    font-size: 48px;
+}
+
+p {
+    font-size: 20px;
+}
+
+label, button, br, input {
+    user-select: none;
+    font-size: 18px;
+}
+
+#text > button {
+    position: relative;
+    background-color: #E7F2EF;
+    margin: 5px;
+    border-radius: 5px;
+    border-width: 1px;
+    box-shadow: black 0 2px;
+}
+
+#text > button:hover {
+    background-color: #93afba;
+    
+}
+
+#text > button:active {
+    box-shadow: none;
+    top: 2px;
+}
+
+#text {
+    position: static;
+    padding: 10px 20px;
+}
+
+#text > .indent {
+    margin-left: 20px;
+}
+
+#canvasbox {
+    justify-self: center;
+    position: relative;
+    width: 750px;
+    height: 650px;
+    margin: 10px 25px 0 0;
+}
+
+#canvas {
+    width: 750px;
+    height: 650px;
+    border: 3px solid #19183B;
+    position: absolute;
+    border-radius: 25px;
+}
+
+#canvasbox > button {
+    background-color:#0000;
+    border-color: #0000;
+    border-radius: 100%;
+    
+    width: 41px;
+    height: 41px;
+    position: absolute;
+}

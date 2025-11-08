@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Sperner's Game</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="flexy">
+            <div id="text">
+                <h1>Sperner's Lemma</h1>
+                <p>Click the nodes to change their colour</p>
+                <button id="randomise" class="indent" onclick="randomise_colours()">Randomise colours</button>
+                <br>
+                <input type="checkbox" class="indent" id="bg-checkbox" onclick="update_bg(this)">
+                <label for="bg-checkbox">Show coloured triangles</label>
+                <br>
+                <input type="checkbox" class="indent" id="arrow-checkbox" disabled onclick="update_arrow(this)">
+                <label for="arrow-checkbox">Show directed graph</label>
+            </div>
+            <div id="canvasbox">
+                <canvas id="canvas" width="750", height="650"></canvas>
+            </div>
+        </div>
+    </body>
+    <script src="script.js"></script>
+</html>
