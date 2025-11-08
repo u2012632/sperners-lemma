@@ -27,8 +27,8 @@ function init_buttons() {
             btn = document.createElement("button")
             btn.setAttribute("colour", "black")
             btn.setAttribute("onclick", `update_btn(${i}, ${j}, this)`)
-            btn.style.top = (y + dy*i) - 20 + "px"
-            btn.style.left = (x + dx*j) - 20 + "px"
+            btn.style.top = (y + dy*i) - 23 + "px"
+            btn.style.left = (x + dx*j) - 23 + "px"
             canvasbox.appendChild(btn)
 
             nodes[i].push(btn)

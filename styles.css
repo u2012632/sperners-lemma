@@ -1,13 +1,15 @@
 #flexy {
     display: grid;
     grid-template-columns: max-content 1fr;
+    height: 100vh;
 }
 
 body {
     margin: 0;
     font-family: sans-serif;
     background-color: #E7F2EF;
-    background: linear-gradient(95deg, #A1C2BD, #A1C2BD 15%, #E7F2EF);
+    background-image: linear-gradient(95deg, #A1C2BD, #A1C2BD 15%, #E7F2EF);
+    background-repeat: no-repeat;
     color: #19183B;
 }
 
@@ -39,7 +41,7 @@ label, button, br, input {
     
 }
 
-#text > button:active {
+#text > button:hover:active {
     box-shadow: none;
     top: 2px;
 }
@@ -74,7 +76,7 @@ label, button, br, input {
     border-color: #0000;
     border-radius: 100%;
     
-    width: 41px;
-    height: 41px;
+    width: 51px;
+    height: 51px;
     position: absolute;
 }
