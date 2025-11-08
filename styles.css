@@ -1,12 +1,13 @@
 #flexy {
     display: grid;
     grid-template-columns: max-content 1fr;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
 }
 
 html {
-	width:121%;
-	height:122%
+    width:121%;
+    height:122%
 }
 
 body {
