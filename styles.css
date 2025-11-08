@@ -6,11 +6,13 @@
 }
 
 html {
-    width:121%;
-    height:122%
+    width: 121%;
+    height: 122%
 }
 
 body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     font-family: sans-serif;
     background-color: #E7F2EF;
