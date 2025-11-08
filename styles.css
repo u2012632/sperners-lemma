@@ -1,6 +1,7 @@
 #flexy {
     display: grid;
     grid-template-columns: max-content 1fr;
+    width: 80%;
 }
 
 html {
@@ -19,7 +20,7 @@ body {
 
 #text > h1 {
     margin: 0;
-    font-size: 48px;
+    font-size: 64px;
 }
 
 p {
