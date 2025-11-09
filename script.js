@@ -122,7 +122,7 @@ function connect_triangle(i, j, x, y, top) {
     if (top && i < rows-1 && valid(c2, c3)) {
         ctx.beginPath()
         ctx.moveTo(x + dx*j, y + dy*(i+2/3))
-        ctx.lineTo(x + dx*j, y + dy*(i+4/3))
+        ctx.lineTo(x + dx*j, y + dy*(i+4/3 + 5*(i == rows-2)))
         ctx.stroke()
     }
     if (!top && valid(c1, c3)) {

@@ -5,11 +5,11 @@
 }
 
 html {
-    width: 121vw;
+    width: 100vw;
 }
 
 body {
-    height: 122vh;
+    height: 100vh;
     margin: 0;
     font-family: sans-serif;
     background-color: #E7F2EF;
