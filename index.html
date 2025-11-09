@@ -13,6 +13,7 @@
                 <input type="range" class="indent" id="rows-range" min="2" max="12" value="6" step="1" oninput="update_rows(this)" onchange="update_rows(this)">
                 <label for="rows-range">Rows</label>
                 <br>
+                <br>
                 <button id="randomise" class="indent" onclick="randomise_colours();draw_canvas()">Randomise colours</button>
                 <br>
                 <button id="unset" class="indent" onclick="reset_colours()">Reset colours</button>
@@ -21,8 +22,8 @@
                 <input type="checkbox" class="indent" id="bg-checkbox" onclick="update_bg(this)">
                 <label for="bg-checkbox">Show coloured triangles</label>
                 <br>
-                <input type="checkbox" class="indent" id="arrow-checkbox" disabled onclick="update_arrow(this)">
-                <label for="arrow-checkbox">Show directed graph</label>
+                <input type="checkbox" class="indent" id="arrow-checkbox" onclick="update_arrow(this)">
+                <label for="arrow-checkbox">Show graph edges</label>
             </div>
             <div id="canvasbox">
                 <canvas id="canvas" width="750", height="650"></canvas>

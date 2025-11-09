@@ -6,7 +6,7 @@ const RED = "#ff0000"
 const GREEN = "#00ff00"
 const BLUE = "#0000ff"
 const NULL = "#A1C2BD"
-const ALPHA = "30"
+const ALPHA = "25"
 
 var rows = 7
 var dx
@@ -14,6 +14,7 @@ var dy
 
 var nodes = []
 var show_bg = false
+var show_arr = false
 ctx.lineWidth = 2
 
 function init_buttons() {
@@ -49,8 +50,8 @@ function randomise_colours() {
             colours = []
 
             if (j > 0) colours.push(BLUE)
-            if (j < i) colours.push(GREEN)
-            if (i < rows-1) colours.push(RED)
+            if (j < i) colours.push(RED)
+            if (i < rows-1) colours.push(GREEN)
             let randidx = Math.floor(Math.random() * colours.length)
             nodes[i][j].setAttribute("colour", colours[randidx])
         }
@@ -67,59 +68,78 @@ function reset_colours() {
     draw_canvas()
 }
 
+function polygon(p1, p2, p3, p4, colour) {
+    if (colour == NULL) return
+    ctx.beginPath()
+    ctx.moveTo(...p1)
+    ctx.lineTo(...p2)
+    ctx.lineTo(...p3)
+    ctx.lineTo(...p4)
+    ctx.fillStyle = colour
+    ctx.fill()
+}
+
 function colour_triangle(i, j, x, y, top) {
-    if (i < rows-1 && (top || (i > 0 && j < i))) {
-        let vs = top ? [
-            [j, i, Math.PI/3, 2*Math.PI/3],
-            [j-1/2, i+1, -Math.PI/3, 0],
-            [j+1/2, i+1, -Math.PI, -2*Math.PI/3]] :
-            [[j, i, 0, Math.PI/3],
-            [j+1, i, 2*Math.PI/3, Math.PI],
-            [j+1/2, i+1, -2*Math.PI/3, -Math.PI/3]]
+    points = top ? [
+        [x + dx*j, y + dy*i],
+        [x + dx*(j+1/4), y + dy*(i+1/2)],
+        [x + dx*(j+1/2), y + dy*(i+1)],
+        [x + dx*j, y + dy*(i+1)],
+        [x + dx*(j-1/2), y + dy*(i+1)],
+        [x + dx*(j-1/4), y + dy*(i+1/2)],
+        [x + dx*j, y + dy*(i+2/3)]] : [
+        [x + dx*j, y + dy*i],
+        [x + dx*(j+1/2), y + dy*i],
+        [x + dx*(j+1), y + dy*i],
+        [x + dx*(j+3/4), y + dy*(i+1/2)],
+        [x + dx*(j+1/2), y + dy*(i+1)],
+        [x + dx*(j+1/4), y + dy*(i+1/2)],
+        [x + dx*(j+1/2), y + dy*(i+1/3)]]
+    
+    let c1 = nodes[i][j].getAttribute("colour") + ALPHA
+    let c2 = nodes[i+1][j+!top].getAttribute("colour") + ALPHA
+    let c3 = nodes[i+top][j+1].getAttribute("colour") + ALPHA
+    polygon(points[0], points[1], points[6], points[5], c1)
+    polygon(points[4], points[5], points[6], points[3], c2)
+    polygon(points[2], points[3], points[6], points[1], c3)
+}
 
-        let c1 = nodes[i][j].getAttribute("colour") + ALPHA
-        let c2 = nodes[i+top][j+!top].getAttribute("colour") + ALPHA
-        let c3 = nodes[i+1][j+1].getAttribute("colour") + ALPHA
+function connect_triangle(i, j, x, y, top) {
+    ctx.beginPath()
+    ctx.arc(x + dx*(j+!top/2), y + dy*(i+1/3+top/3), 2, 0, 2 * Math.PI)
+    ctx.fillStyle = "goldenrod"
+    ctx.strokeStyle = "goldenrod"
+    ctx.lineWidth = 3
+    ctx.fill()
+    ctx.stroke()
 
-        if (c1 == c2 && c2 == c3) {
-            ctx.beginPath()
-            ctx.moveTo(x + dx*vs[0][0], y + dy*vs[0][1])
-            ctx.lineTo(x + dx*vs[1][0], y + dy*vs[1][1])
-            ctx.lineTo(x + dx*vs[2][0], y + dy*vs[2][1])
-            ctx.fillStyle = c1
-            ctx.fill()
-            return
-        }
-        let v
-        if (c1 == c2) v = 2
-        else if (c1 == c3) v = 1
-        else if (c2 == c3) v = 0
-        else {
-            for (let k of [0,1,2]) {
-                ctx.beginPath()
-                ctx.moveTo(x + dx*vs[k][0], y + dy*vs[k][1])
-                ctx.lineTo(x + dx*(vs[k][0]+vs[(k+1)%3][0])/2, y + dy*(vs[k][1]+vs[(k+1)%3][1])/2)
-                ctx.lineTo(x + dx*(j+1/2-top/2), y + dy*(i+1/3+top/3))
-                ctx.lineTo(x + dx*(vs[k][0]+vs[(k+2)%3][0])/2, y + dy*(vs[k][1]+vs[(k+2)%3][1])/2)
-                ctx.fillStyle = [c1,c2,c3][k]
-                ctx.fill()
-            }
-            return
-        }
+    let c1 = nodes[i][j].getAttribute("colour")
+    let c2 = nodes[i+top][j+!top].getAttribute("colour")
+    let c3 = nodes[i+1][j+1].getAttribute("colour")
+    let valid = (x, y) => [RED, BLUE].includes(x) && [RED, BLUE].includes(y) && x != y
 
+
+    if (top && i < rows-1 && valid(c2, c3)) {
         ctx.beginPath()
-        ctx.arc(x + dx*vs[v][0], y + dy*vs[v][1], dx/2, vs[v][2], vs[v][3])
-        ctx.lineTo(x + dx*vs[v][0], y + dy*vs[v][1])
-        ctx.fillStyle = [c1, c2, c3][v]
-        ctx.fill()
-
-        ctx.beginPath()
-        ctx.arc(x + dx*vs[v][0], y + dy*vs[v][1], dx/2, vs[v][2], vs[v][3])
-        ctx.lineTo(x + dx*vs[(v+2-top)%3][0], y + dy*vs[(v+2-top)%3][1])
-        ctx.lineTo(x + dx*vs[(v+1+top)%3][0], y + dy*vs[(v+1+top)%3][1])
-        ctx.fillStyle = [c1,c2,c3][(v+1)%3]
-        ctx.fill()
+        ctx.moveTo(x + dx*j, y + dy*(i+2/3))
+        ctx.lineTo(x + dx*j, y + dy*(i+4/3))
+        ctx.stroke()
     }
+    if (!top && valid(c1, c3)) {
+        ctx.beginPath()
+        ctx.moveTo(x + dx*j, y + dy*(i+2/3))
+        ctx.lineTo(x + dx*(j+1/2), y + dy*(i+1/3))
+        ctx.stroke()
+    }
+    if (!top && valid(c2, c3)) {
+        ctx.beginPath()
+        ctx.moveTo(x + dx*(j+1/2), y + dy*(i+1/3))
+        ctx.lineTo(x + dx*(j+1), y + dy*(i+2/3))
+        ctx.stroke()
+    }
+
+    ctx.lineWidth = 2
+    ctx.strokeStyle = "black"
 }
 
 function draw_canvas() {
@@ -129,11 +149,10 @@ function draw_canvas() {
         let y = 50
 
         for (let j = 0; j <= i; j++) {
-
-            // Centre
-            if (show_bg) {
+            // Filled triangle
+            if (show_bg && i < rows-1) {
                 colour_triangle(i, j, x, y, true)
-                colour_triangle(i, j, x, y, false)
+                if (i > 0 && j < i) colour_triangle(i, j, x, y, false)
             }
 
             // Diagonal edges
@@ -158,6 +177,12 @@ function draw_canvas() {
             ctx.fillStyle = nodes[i][j].getAttribute("colour")
             ctx.fill()
             ctx.stroke()
+            
+            // Vertices
+            if (show_arr && i < rows-1) {
+                connect_triangle(i, j, x, y, true)
+                if (j < i) connect_triangle(i, j, x, y, false)
+            }
         }
     }
 }
@@ -165,8 +190,8 @@ function draw_canvas() {
 function update_btn(i, j, button) {
     colours = []
     if (j > 0) colours.push(BLUE)
-    if (j < i) colours.push(GREEN)
-    if (i < rows-1) colours.push(RED)
+    if (j < i) colours.push(RED)
+    if (i < rows-1) colours.push(GREEN)
 
     let colour = button.getAttribute("colour")
     let idx = colours.indexOf(colour)
@@ -184,6 +209,11 @@ function update_rows(range) {
     rows = range.value
     init_buttons()
     randomise_colours()
+    draw_canvas()
+}
+
+function update_arrow(button) {
+    show_arr = button.checked
     draw_canvas()
 }
 
