@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d")
 const RED = "#ff0000"
 const GREEN = "#00ff00"
 const BLUE = "#0000ff"
-const NULL = "#A1C2BD"
+const NULL = "#E7F2EF"
 const ALPHA = "25"
 
 var rows = 7
