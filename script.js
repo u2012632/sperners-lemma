@@ -1,22 +1,29 @@
 const canvasbox = document.getElementById("canvasbox")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
-const rows = 7
-
 
 const RED = "#ff0000"
 const GREEN = "#00ff00"
 const BLUE = "#0000ff"
+const NULL = "#A1C2BD"
 const ALPHA = "30"
 
-const dx = 650/(rows-1)
-const dy = Math.sqrt(3)/2 * dx
+var rows = 7
+var dx
+var dy
 
-ctx.lineWidth = 2
 var nodes = []
 var show_bg = false
+ctx.lineWidth = 2
 
 function init_buttons() {
+    for (let row of nodes) {
+        for (let button of row) button.remove()
+    }
+    nodes = []
+
+    dx = 650/(rows-1)
+    dy = Math.sqrt(3)/2 * dx
     for (let i = 0; i < rows; i++) {
         nodes.push([])
         for (let j = 0; j <= i; j++) {
@@ -46,6 +53,15 @@ function randomise_colours() {
             if (i < rows-1) colours.push(RED)
             let randidx = Math.floor(Math.random() * colours.length)
             nodes[i][j].setAttribute("colour", colours[randidx])
+        }
+    }
+}
+
+function reset_colours() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j <= i; j++) {
+            if (i == 0 || (i == rows-1 && (j == 0 || j == rows-1))) continue
+            nodes[i][j].setAttribute("colour", NULL)
         }
     }
     draw_canvas()
@@ -79,7 +95,6 @@ function colour_triangle(i, j, x, y, top) {
         else if (c1 == c3) v = 1
         else if (c2 == c3) v = 0
         else {
-            
             for (let k of [0,1,2]) {
                 ctx.beginPath()
                 ctx.moveTo(x + dx*vs[k][0], y + dy*vs[k][1])
@@ -154,9 +169,9 @@ function update_btn(i, j, button) {
     if (i < rows-1) colours.push(RED)
 
     let colour = button.getAttribute("colour")
-    let idx = (colours.indexOf(colour) + 1) % colours.length
-    nodes[i][j].setAttribute("colour", colours[idx])
-    console.log("changed to", nodes[i][j].getAttribute("colour"))
+    let idx = colours.indexOf(colour)
+    let newidx = idx < 0 ? 0 : (idx+1) % colours.length
+    nodes[i][j].setAttribute("colour", colours[newidx])
     draw_canvas()
 }
 
@@ -165,8 +180,11 @@ function update_bg(button) {
     draw_canvas()
 }
 
+function update_rows(range) {
+    rows = range.value
+    init_buttons()
+    randomise_colours()
+    draw_canvas()
+}
 
-init_buttons()
-randomise_colours()
-draw_canvas()
-
+update_rows({"value": 6})

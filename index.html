@@ -9,8 +9,14 @@
             <div id="text">
                 <h1>Sperner's<br>Lemma<br>Visualiser</h1>
                 <br><br>
-		<p>Click the nodes to change their colour</p>
-                <button id="randomise" class="indent" onclick="randomise_colours()">Randomise colours</button>
+		        <p>Click the nodes to change their colour</p>
+                <input type="range" class="indent" id="rows-range" min="2" max="12" value="6" step="1" oninput="update_rows(this)" onchange="update_rows(this)">
+                <label for="rows-range">Rows</label>
+                <br>
+                <button id="randomise" class="indent" onclick="randomise_colours();draw_canvas()">Randomise colours</button>
+                <br>
+                <button id="unset" class="indent" onclick="reset_colours()">Reset colours</button>
+                <br>
                 <br>
                 <input type="checkbox" class="indent" id="bg-checkbox" onclick="update_bg(this)">
                 <label for="bg-checkbox">Show coloured triangles</label>
