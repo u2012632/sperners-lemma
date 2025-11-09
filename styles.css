@@ -1,7 +1,6 @@
 #flexy {
     display: grid;
     grid-template-columns: max-content 1fr;
-    width: 80%;
 }
 
 html {
@@ -13,8 +12,6 @@ body {
     margin: 0;
     font-family: sans-serif;
     background-color: #E7F2EF;
-    background-image: linear-gradient(95deg, #A1C2BD, #A1C2BD 15%, #E7F2EF);
-    background-repeat: no-repeat;
     color: #19183B;
 }
 
@@ -54,6 +51,8 @@ label, button, br, input {
 #text {
     position: static;
     padding: 10px 20px;
+    background: #a1c2bd;
+    box-shadow: #a1c2bd 0 0 60px 60px
 }
 
 #text > .indent {
